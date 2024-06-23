@@ -1,6 +1,5 @@
 package jp.speakbuddy.image.repository
 
-import android.util.Log
 import jp.speakbuddy.image.datasource.ImageLocalDataSource
 import jp.speakbuddy.image.datasource.ImageRemoteDataSource
 import jp.speakbuddy.image.network.Photos
@@ -16,7 +15,6 @@ class ImageRepository(
 
     private suspend fun getImage(): Flow<List<Photos>> = channelFlow {
         local.getImage().collect {
-            Log.d("AF", "image local $it")
             withContext(currentCoroutineContext()) {
                 if (it.isEmpty()) {
                     val remoteData = remote.fetchImage()

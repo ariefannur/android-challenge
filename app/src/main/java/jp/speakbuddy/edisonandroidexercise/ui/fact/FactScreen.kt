@@ -3,6 +3,8 @@ package jp.speakbuddy.edisonandroidexercise.ui.fact
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -35,6 +37,7 @@ import jp.speakbuddy.fact.domain.model.Fetching
 import jp.speakbuddy.fact.network.FactResponse
 import jp.speakbuddy.image.network.Photos
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FactScreen(
     viewModel: FactViewModel,
@@ -97,11 +100,26 @@ fun FactScreen(
                     text = stringResource(R.string.title_cat_fact_today),
                     style = MaterialTheme.typography.titleLarge,
                 )
-                Text(
-                    text = result.fact,
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Center
-                )
+
+                FlowRow (
+                  horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = result.fact,
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = "(${result.length})",
+                        style = MaterialTheme.typography.labelSmall,
+                    )
+                    if (result.fact.contains("cats", true)) {
+                        Text(
+                            text = " Multiple cats!",
+                            style = MaterialTheme.typography.labelSmall,
+                        )
+                    }
+                }
 
                 val onClick = {
                     viewModel.getRandomFact(FactParam(Fetching.REMOTE, 100))

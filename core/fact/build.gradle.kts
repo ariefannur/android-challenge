@@ -24,4 +24,9 @@ dependencies {
     api(project(":core:common"))
     kapt(libs.hilt.compiler)
     kapt(libs.androidx.room.compiler)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+
 }

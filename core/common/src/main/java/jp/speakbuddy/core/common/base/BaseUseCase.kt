@@ -2,7 +2,7 @@ package jp.speakbuddy.core.common.base
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -13,7 +13,7 @@ abstract class BaseUseCase<out Type, in Params> where Type : Any {
 
     operator fun invoke(
         params: Params,
-        scope: CoroutineScope = GlobalScope,
+        scope: CoroutineScope = MainScope(),
         callback: (DataState<Type>) -> Unit = {}
     ) {
         scope.launch(Dispatchers.IO) {

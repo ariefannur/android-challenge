@@ -1,6 +1,5 @@
 package jp.speakbuddy.fact.repository
 
-import android.util.Log
 import jp.speakbuddy.fact.datasource.FactLocalDataSource
 import jp.speakbuddy.fact.datasource.FactRemoteDataSource
 import jp.speakbuddy.fact.domain.model.Fetching
@@ -36,8 +35,7 @@ class FactRepository(
 
     private suspend fun getLocal(length: Int): FactResponse? {
         val localData = local.getLastFact()
-        Log.d("AF", "Local : $localData")
-        return if (length == 0 || (length > 0 && (localData?.length ?: 0) <= length)) {
+        return if (length == 0 || (length > 0 && (localData?.length ?: 0) > length)) {
             localData
         } else if (localData == null) null else getLocal(length)
     }
@@ -45,7 +43,7 @@ class FactRepository(
     private suspend fun fetchRemote(length: Int): FactResponse {
         val remoteData = remote.fetchFact()
         kotlin.runCatching { local.cacheFact(remoteData) }
-        return if (length == 0 || (length > 0 && remoteData.length <= length)) {
+        return if (length == 0 || (length > 0 && remoteData.length > length)) {
             remoteData
         } else fetchRemote(length)
     }

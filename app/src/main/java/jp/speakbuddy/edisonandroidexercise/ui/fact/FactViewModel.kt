@@ -1,6 +1,5 @@
 package jp.speakbuddy.edisonandroidexercise.ui.fact
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,6 +13,7 @@ import jp.speakbuddy.image.domain.GetRandomImage
 import jp.speakbuddy.image.network.Photos
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,7 +23,7 @@ class FactViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _imageResponse = MutableStateFlow<UIState<Photos>>(UIState.Loading)
-    val imageData: StateFlow<UIState<Photos>> = _imageResponse
+    val imageData: StateFlow<UIState<Photos>> = _imageResponse.asStateFlow()
     fun getRandomImage() {
         getRandomImage(BaseUseCase.None(), viewModelScope) {
             when(it) {
@@ -32,7 +32,6 @@ class FactViewModel @Inject constructor(
                     it.result
                 )
                 is DataState.Failure -> {
-                    Log.d("AF", "image error : ${it.message}")
                     _imageResponse.value = UIState.Error(it.message)
                 }
             }
@@ -40,7 +39,7 @@ class FactViewModel @Inject constructor(
     }
 
     private val _factResponse = MutableStateFlow<UIState<FactResponse>>(UIState.Loading)
-    val factData: StateFlow<UIState<FactResponse>> = _factResponse
+    val factData: StateFlow<UIState<FactResponse>> = _factResponse.asStateFlow()
     fun getRandomFact(param: FactParam) {
         getRandomFact(param, viewModelScope) {
             when(it) {
@@ -49,7 +48,6 @@ class FactViewModel @Inject constructor(
                     it.result
                 )
                 is DataState.Failure -> {
-                    Log.d("AF", "fact error ${it.message}")
                     _factResponse.value = UIState.Error(it.message)
                 }
             }
