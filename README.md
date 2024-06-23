@@ -26,4 +26,9 @@
 - Integrated with Github Action
   - https://github.com/ariefannur/android-challenge-speak-buddy/actions
 
+## Screenshot
+![Screenshot Home](./screenshot/cat-fact_app.jpg)
+![Screenshot History](./screenshot/history-cat-fact_app.jpg)
+
+
 
