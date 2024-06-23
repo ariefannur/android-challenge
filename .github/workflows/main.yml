@@ -19,4 +19,4 @@ jobs:
       - name: Decode Env
         run: echo image.token="" > ./local.properties
       - name: Unit tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testDebugUnitTest --stacktrace
