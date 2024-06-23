@@ -10,6 +10,7 @@ import jp.speakbuddy.fact.domain.model.Fetching
 import jp.speakbuddy.fact.network.FactResponse
 import jp.speakbuddy.fact.repository.FactRepository
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
@@ -26,17 +27,12 @@ class GetRandomFactTest {
         coEvery { repository.getRandomFact(Fetching.REMOTE, 90) } returns flowOf(response)
 
 //        when
-        var result: FactResponse? = null
-        getRandomFact(FactParam(Fetching.REMOTE, 90)) {
-            when(it) {
-                is DataState.Success -> result = it.result
-                else -> Unit
-            }
-        }
+        val resultData = mutableListOf<FactResponse>()
+        val result = getRandomFact.run(FactParam(Fetching.REMOTE, 90))
+        result.toList(resultData)
 //        than
         coVerify { repository.getRandomFact(Fetching.REMOTE, 90) }
-
-        Assert.assertEquals(result, response)
+        Assert.assertEquals(response, resultData.first())
     }
 
 }

@@ -1,13 +1,12 @@
 package jp.speakbuddy.fact
 
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import jp.speakbuddy.core.common.base.DataState
 import jp.speakbuddy.fact.domain.GetHistory
 import jp.speakbuddy.fact.network.FactResponse
 import jp.speakbuddy.fact.repository.FactRepository
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
@@ -29,17 +28,12 @@ class GetHistoryFactTest {
             sampleResponse
         )
 //        when
-        var result = listOf<FactResponse>()
-        getHistory("") {
-            when(it) {
-                is DataState.Success -> result = it.result
-                else -> Unit
-            }
-        }
-//        than
-        coVerify { repository.getListHistory("") }
+        val resultData = mutableListOf<List<FactResponse>>()
 
-        Assert.assertEquals(result, sampleResponse)
+        val result = getHistory.run("")
+        result.toList(resultData)
+//        than
+        Assert.assertEquals(sampleResponse, resultData.first())
     }
 
 }
