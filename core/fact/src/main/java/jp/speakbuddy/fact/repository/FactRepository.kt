@@ -11,6 +11,7 @@ class FactRepository(
     private val local: FactLocalDataSource,
     private val remote: FactRemoteDataSource
 ) {
+    private var tryAgain = 0
     suspend fun getRandomFact(fetching: Fetching, length: Int = 0): Flow<FactResponse> = flow  {
         when(fetching) {
             Fetching.LOCAL -> {
@@ -35,9 +36,13 @@ class FactRepository(
 
     private suspend fun getLocal(length: Int): FactResponse? {
         val localData = local.getLastFact()
+        tryAgain++
         return if (length == 0 || (length > 0 && (localData?.length ?: 0) > length)) {
             localData
-        } else if (localData == null) null else getLocal(length)
+        } else if (localData == null || tryAgain > 3) {
+            tryAgain = 0
+            null
+        } else getLocal(length)
     }
 
     private suspend fun fetchRemote(length: Int): FactResponse {
