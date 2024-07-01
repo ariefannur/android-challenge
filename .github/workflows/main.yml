@@ -1,0 +1,22 @@
+## 1
+name: Test and deploy
+
+## Actions that will be executed when you push code currently none
+on:
+  push:
+
+## 2
+jobs:
+  ## 3
+  unit_tests:
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '17'
+      - name: Decode Env
+        run: echo image.token="" > ./local.properties
+      - name: Unit tests
+        run: ./gradlew testDebugUnitTest

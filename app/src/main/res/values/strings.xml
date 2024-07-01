@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Edison Android Exercise</string>
+    <string name="update_button">Update</string>
+    <string name="title_cat_fact_today">Cat Fact Today</string>
+    <string name="title_fact_cat_app">Fact Cat App</string>
+    <string name="menu_fact">Fact</string>
+    <string name="menu_history">History</string>
 </resources>
